@@ -1,1 +1,17 @@
-# rvnegociosteste
+js/
+├── config.js          (Supabase, variáveis globais, estado)
+├── auth.js            (Logout, sessão, navegação)
+├── utils.js           (formatMoney, formatDate, toast, loading)
+├── db.js              (fetchAllRecords, loadData, updateSelects)
+├── obras.js           (CRUD obras, dashboard)
+├── fornecedores.js    (CRUD fornecedores)
+├── produtos.js        (CRUD produtos, histórico de compras)
+├── fases.js           (CRUD fases de obra)
+├── equipe.js          (CRUD equipe, ponto manual/automático, recibos, documentos)
+├── financeiro.js      (despesas, receitas, baixas, estornos, relatórios financeiros)
+├── oc.js              (ordens de compra, carrinho, PDF, romaneio, transferência portal)
+├── relatorios.js      (relatórios avançados)
+├── users.js           (CRUD usuários)
+├── terceirizados.js   (CRUD terceirizados, produção por metragem, recibos)
+├── modals.js          (gerenciamento de modais)
+└── main.js            (ponto de entrada, window.onload, navigate)
