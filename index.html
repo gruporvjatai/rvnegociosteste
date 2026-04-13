@@ -4,7 +4,6 @@
     <base target="_top">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle de Obras Públicas - RV</title>
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -12,64 +11,1160 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
     <script>
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 800) {
-          window.location.replace("mobile.html");
-        }
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 800) {
+        window.location.replace("mobile.html");
+      }
     </script>
 
-    <link rel="icon" type="image/png" href="assets/img/logo.png">
-    <meta name="theme-color" content="#0f172a"> 
-    
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="shortcut icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="RV Negócios">
+    <meta name="apple-mobile-web-app-title" content="RV Negócios">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
 
+    <!-- ======================================================== -->
+    <!-- SIDEBAR / NAVEGAÇÃO                                        -->
+    <!-- ======================================================== -->
     <div class="w-64 bg-slate-900 text-white h-screen fixed left-0 top-0 flex flex-col shadow-2xl z-20 hidden md:flex no-print">
       <div class="p-6 flex flex-col items-center border-b border-slate-800 bg-slate-900 relative">
         <button onclick="location.reload()" class="absolute top-2 right-2 p-1.5 bg-slate-800/50 hover:bg-slate-700 text-blue-400 rounded-lg transition-colors border border-slate-700" title="Atualizar Sistema">
-            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i>
         </button>
         <div class="w-20 h-20 rounded-full border-4 border-blue-600 mb-3 shadow-lg overflow-hidden p-1 bg-white">
-            <img src="https://i.postimg.cc/PqdgXGF0/logo-rv-negociospng.png" class="w-full h-full object-contain" />
+          <img src="https://i.postimg.cc/PqdgXGF0/logo-rv-negociospng.png" class="w-full h-full object-contain" />
         </div>
         <h1 class="text-lg font-bold tracking-wider text-blue-500">RV NEGÓCIOS</h1>
       </div>
-      
       <nav class="flex-1 mt-4 px-3 space-y-1 overflow-y-auto">
-        <button onclick="router.navigate('dash')" id="nav-dash" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-all"><i data-lucide="layout-dashboard"></i> <span class="font-medium text-sm">Visão Geral</span></button>
-        <button onclick="router.navigate('oc')" id="nav-oc" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-all"><i data-lucide="folder-open"></i> <span class="font-medium text-sm">Ordens de Compra</span></button>
-        <button onclick="router.navigate('pos')" id="nav-pos" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-all"><i data-lucide="shopping-cart"></i> <span class="font-medium text-sm">Nova O.C.</span></button>
-        <button onclick="router.navigate('fin')" id="nav-fin" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-all"><i data-lucide="bar-chart-3"></i> <span class="font-medium text-sm">Financeiro Obras</span></button>
-        
+        <button onclick="navigate('dash')" id="nav-dash" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-all"><i data-lucide="layout-dashboard"></i> <span class="font-medium text-sm">Visão Geral</span></button>
+        <button onclick="navigate('oc')" id="nav-oc" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-all"><i data-lucide="folder-open"></i> <span class="font-medium text-sm">Ordens de Compra</span></button>
+        <button onclick="navigate('pos')" id="nav-pos" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-all"><i data-lucide="shopping-cart"></i> <span class="font-medium text-sm">Nova O.C.</span></button>
+        <button onclick="navigate('fin')" id="nav-fin" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-all"><i data-lucide="bar-chart-3"></i> <span class="font-medium text-sm">Financeiro Obras</span></button>
         <div class="border-t border-slate-800 my-2 pt-2"></div>
-        
-        <button onclick="router.navigate('equipe')" id="nav-equipe" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-all"><i data-lucide="users"></i> <span class="font-medium text-sm">Equipe</span></button>
-        <button onclick="router.navigate('terc')" id="nav-terc" class="nav-btn w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl transition font-medium"><i data-lucide="hard-hat" width="20"></i> Terceirizados </button>
-        <button onclick="router.navigate('fornecedores')" id="nav-fornecedores" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-all"><i data-lucide="truck"></i> <span class="font-medium text-sm">Fornecedores</span></button>
-        <button onclick="router.navigate('produtos')" id="nav-prod" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-all"><i data-lucide="package"></i> <span class="font-medium text-sm">Produtos</span></button>
-        <button onclick="router.navigate('fases')" id="nav-fases" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-all"><i data-lucide="layers"></i> <span class="font-medium text-sm">Fases de Obra</span></button>
-       </nav>
-       
-      <div class="p-3 border-t border-slate-800"> 
-        <button onclick="fazerLogout()" class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-900/30 transition-all"><i data-lucide="log-out"></i> <span class="font-medium text-sm">Sair</span></button> 
+        <button onclick="navigate('equipe')" id="nav-equipe" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-all"><i data-lucide="users"></i> <span class="font-medium text-sm">Equipe</span></button>
+        <button onclick="navigate('terc')" id="nav-terc" class="nav-btn w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl transition font-medium"><i data-lucide="hard-hat" width="20"></i> Terceirizados</button>
+        <button onclick="navigate('fornecedores')" id="nav-fornecedores" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-all"><i data-lucide="truck"></i> <span class="font-medium text-sm">Fornecedores</span></button>
+        <button onclick="navigate('prod')" id="nav-prod" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-all"><i data-lucide="package"></i> <span class="font-medium text-sm">Produtos</span></button>
+        <button onclick="navigate('fases')" id="nav-fases" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-all"><i data-lucide="layers"></i> <span class="font-medium text-sm">Fases de Obra</span></button>
+        <button onclick="navigate('reports')" id="nav-reports" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-all"><i data-lucide="pie-chart"></i> <span class="font-medium text-sm">Relatórios</span></button>
+        <button onclick="navigate('users')" id="nav-users" class="nav-btn w-full hidden flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-all"><i data-lucide="shield"></i> <span class="font-medium text-sm">Usuários</span></button>
+      </nav>
+      <div class="p-3 border-t border-slate-800">
+        <button onclick="fazerLogout()" class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-900/30 transition-all"><i data-lucide="log-out"></i> <span class="font-medium text-sm">Sair</span></button>
       </div>
     </div>
 
-    <main class="flex-1 md:ml-64 p-4 md:p-6 overflow-y-auto h-screen no-print bg-slate-50 relative">
-      
+    <!-- ======================================================== -->
+    <!-- ÁREA PRINCIPAL                                             -->
+    <!-- ======================================================== -->
+    <main class="flex-1 md:ml-64 p-4 md:p-6 overflow-y-auto h-screen no-print bg-slate-50">
+
+      <!-- Loading Overlay -->
       <div id="loading" class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
-         <div class="bg-white p-6 rounded-xl flex flex-col items-center shadow-2xl"><div class="loader mb-4"></div><span class="font-bold text-slate-700">Processando...</span></div>
+        <div class="bg-white p-6 rounded-xl flex flex-col items-center shadow-2xl"><div class="loader mb-4"></div><span class="font-bold text-slate-700">Processando...</span></div>
       </div>
+
+      <!-- Toast Notification -->
       <div id="toast" class="hidden fixed top-5 right-5 px-6 py-3 rounded-lg shadow-xl text-white font-medium z-50 transition-opacity duration-300"></div>
 
-      <div id="conteudo-principal"></div>
+      <!-- ==================== VIEW: DASHBOARD ==================== -->
+      <div id="view-dash" class="hidden-section">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-slate-800">Controle de Obras</h2>
+          <button onclick="openObraForm()" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg font-bold shadow-md flex items-center gap-2"><i data-lucide="plus"></i> Nova Obra</button>
+        </div>
+        <div id="dash-grid" class="grid grid-cols-1 xl:grid-cols-2 gap-6 pb-10"></div>
+      </div>
+
+      <!-- ==================== VIEW: ORDENS DE COMPRA ==================== -->
+      <div id="view-oc" class="hidden-section">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
+          <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2"><i data-lucide="folder-open" class="text-blue-700"></i> Ordens de Compra</h2>
+          <div class="relative w-full md:w-64">
+            <i data-lucide="search" class="absolute left-2 top-2.5 text-slate-400 w-4 h-4"></i>
+            <input type="text" id="oc-search" placeholder="Buscar fornecedor/obra..." class="w-full pl-8 p-2 border rounded-lg text-sm focus:ring-2 focus:ring-blue-600 outline-none shadow-sm" onkeyup="renderOCList()">
+          </div>
+        </div>
+        <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left">
+              <thead class="bg-slate-100 text-slate-700">
+                <tr>
+                  <th class="p-4 w-24">O.C.</th>
+                  <th class="p-4">Fornecedor / Obra</th>
+                  <th class="p-4 text-center">Status</th>
+                  <th class="p-4">Produtos</th>
+                  <th class="p-4 text-right">Valor Estimado</th>
+                  <th class="p-4 text-center">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="oc-list" class="divide-y"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== VIEW: NOVA O.C. (POS) ==================== -->
+      <div id="view-pos" class="hidden-section">
+        <div class="flex flex-col h-[calc(100vh-100px)]">
+          <div class="bg-white p-0 rounded-xl border shadow-lg flex flex-col h-full overflow-hidden border-t-4 border-t-blue-800">
+            <div class="p-4 bg-slate-50 border-b flex justify-between items-center">
+              <div class="font-bold text-slate-700 flex gap-2 items-center"><i data-lucide="shopping-cart" class="text-blue-700"></i> NOVA ORDEM DE COMPRA</div>
+              <div class="flex gap-2">
+                <button onclick="openPosProductModal()" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 shadow-md transition text-sm"><i data-lucide="search" class="w-4 h-4"></i> Buscar Materiais</button>
+                <button onclick="clearCart()" class="text-xs text-red-500 hover:text-red-700 font-bold border border-red-200 px-3 py-2 rounded-lg bg-white">LIMPAR</button>
+              </div>
+            </div>
+
+            <div id="pos-cart-items" class="flex-1 space-y-2 overflow-y-auto p-4 bg-slate-50"></div>
+
+            <div class="bg-white p-4 border-t shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+              <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Destino (Obra)</label>
+                  <select id="pos-obra" class="w-full p-2 border rounded-lg text-sm bg-slate-50 font-bold text-slate-700 focus:border-blue-600 outline-none"></select>
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Fase da Obra</label>
+                  <select id="pos-fase" class="w-full p-2 border rounded-lg text-sm bg-slate-50 font-bold text-slate-700 focus:border-blue-600 outline-none">
+                    <option value="">-- Não especificada --</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Fornecedor</label>
+                  <div class="flex gap-2">
+                    <input type="hidden" id="pos-fornecedor" value="">
+                    <button id="pos-fornecedor-btn" onclick="openPosFornecedorModal()" class="w-full p-2 border rounded-lg text-sm bg-slate-50 focus:border-blue-600 text-left flex justify-between items-center text-slate-600 font-bold">
+                      <span class="truncate">Selecione Fornecedor</span>
+                      <i data-lucide="search" class="w-4 h-4 text-slate-400 shrink-0"></i>
+                    </button>
+                    <button onclick="navigate('fornecedores')" class="p-2 bg-slate-200 rounded-lg hover:bg-slate-300 shrink-0" title="Novo Fornecedor"><i data-lucide="user-plus" class="w-4 h-4"></i></button>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Solicitante / Comprador</label>
+                  <input type="text" id="pos-solicitante" placeholder="Nome de quem solicitou..." class="w-full p-2 border rounded-lg text-sm bg-slate-50 focus:border-blue-600 outline-none font-medium">
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Observações (Recados)</label>
+                  <textarea id="pos-custom-obs" rows="1" placeholder="Observações da Cotação..." class="w-full p-2 border rounded-lg text-sm bg-slate-50 focus:border-blue-600 outline-none resize-none"></textarea>
+                </div>
+              </div>
+              <div class="flex justify-between items-end border-t border-slate-200 pt-3">
+                <div class="text-sm font-bold text-slate-500">Total de Itens: <span id="cart-count" class="text-blue-700">0</span></div>
+                <div class="text-right flex items-center gap-4">
+                  <div>
+                    <div class="text-xs text-slate-500 font-bold uppercase">Total da O.C.</div>
+                    <div id="pos-total-display" class="text-3xl font-black text-slate-800 leading-none">R$ 0,00</div>
+                  </div>
+                  <button onclick="saveOC()" class="btn-action bg-blue-700 hover:bg-blue-800 text-white px-8 py-3 rounded-xl shadow-lg text-lg"><i data-lucide="save"></i> Salvar O.C.</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== VIEW: FINANCEIRO ==================== -->
+      <div id="view-fin" class="hidden-section">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+          <h2 class="text-2xl font-bold text-slate-800">Financeiro das Obras</h2>
+          <div class="w-full md:w-1/3">
+            <label class="text-xs font-bold text-slate-500 uppercase">Filtrar por Obra</label>
+            <select id="fin-obra-filter" onchange="renderFinance()" class="w-full p-2 border border-slate-300 rounded-lg text-sm bg-white font-bold text-blue-700 shadow-sm focus:border-blue-600 outline-none">
+              <option value="">Todas as Obras / Geral</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="fin-cards-container" class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-4 mb-6"></div>
+
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+          <!-- Custos -->
+          <div class="bg-white rounded-xl border shadow-sm flex flex-col h-[650px]">
+            <div class="p-4 border-b bg-slate-50 rounded-t-xl flex justify-between items-center">
+              <h3 class="font-bold text-slate-700 flex items-center gap-2"><i data-lucide="arrow-up-circle" class="w-5 h-5 text-red-500"></i> Custos / Pagamentos</h3>
+              <button onclick="openExpenseModal()" class="bg-slate-800 hover:bg-slate-900 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-md transition-all flex items-center gap-1"><i data-lucide="plus" class="w-4 h-4"></i> Lançar Despesa</button>
+            </div>
+            <div class="p-3 border-b bg-white flex flex-col gap-2">
+              <div class="flex gap-2">
+                <div class="relative flex-1">
+                  <i data-lucide="search" class="absolute left-2 top-2 text-slate-400 w-4 h-4"></i>
+                  <input type="text" id="exp-search" placeholder="Buscar..." class="w-full pl-8 p-1.5 border rounded text-xs focus:ring-1 focus:ring-blue-500 outline-none" onkeyup="renderFinance()">
+                </div>
+                <select id="exp-status" class="w-32 p-1.5 border rounded text-xs focus:ring-1 focus:ring-blue-500 outline-none" onchange="renderFinance()">
+                  <option value="">Todos</option>
+                  <option value="PENDENTE">Pendentes</option>
+                  <option value="PAGO">Pagos</option>
+                </select>
+              </div>
+            </div>
+            <div class="overflow-y-auto flex-1 p-0">
+              <table class="w-full text-sm text-left">
+                <thead class="text-slate-500 bg-slate-100 sticky top-0 border-b z-10">
+                  <tr>
+                    <th class="p-3 font-semibold">Venc/Data</th>
+                    <th class="p-3 font-semibold">Descrição / Categoria / Obra</th>
+                    <th class="p-3 font-semibold">Valor</th>
+                    <th class="p-3 font-semibold text-right w-28">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="fin-expense-history-list" class="divide-y"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Receitas -->
+          <div class="bg-white rounded-xl border shadow-sm flex flex-col h-[650px]">
+            <div class="p-4 border-b bg-slate-50 rounded-t-xl flex justify-between items-center">
+              <h3 class="font-bold text-slate-700 flex items-center gap-2"><i data-lucide="arrow-down-circle" class="w-5 h-5 text-green-600"></i> Medições (Receitas)</h3>
+              <button onclick="openRevenueModal()" class="bg-blue-700 hover:bg-blue-800 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-md transition-all flex items-center gap-1"><i data-lucide="plus" class="w-4 h-4"></i> Lançar Medição</button>
+            </div>
+            <div class="overflow-y-auto flex-1 p-0">
+              <table class="w-full text-sm text-left">
+                <thead class="text-slate-500 bg-slate-100 sticky top-0 border-b z-10">
+                  <tr>
+                    <th class="p-3 font-semibold">Venc/Data</th>
+                    <th class="p-3 font-semibold">Descrição / Origem</th>
+                    <th class="p-3 font-semibold">Valor</th>
+                    <th class="p-3 font-semibold text-right w-28">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="fin-receivables-list" class="divide-y"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== VIEW: EQUIPE ==================== -->
+      <div id="view-equipe" class="hidden-section">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
+          <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2"><i data-lucide="users" class="text-blue-700"></i> Equipe</h2>
+          <div class="flex gap-2 w-full md:w-auto">
+            <button onclick="imprimirFolha()" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded font-bold shadow flex items-center gap-2"><i data-lucide="printer" class="w-4 h-4"></i> Imprimir Folha</button>
+            <button onclick="openEquipeForm()" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded font-bold shadow flex items-center gap-2"><i data-lucide="plus" class="w-4 h-4"></i> Cadastrar Membro</button>
+          </div>
+        </div>
+        <div class="mb-4 bg-white p-4 rounded-xl shadow-sm border grid grid-cols-1 md:grid-cols-5 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Status</label>
+            <select id="eqp-filter-status" class="w-full p-2 border rounded outline-none focus:border-blue-600 font-medium bg-slate-50" onchange="renderEquipe()">
+              <option value="true">Ativos</option>
+              <option value="false">Desativados</option>
+              <option value="todos">Todos</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Mês</label>
+            <select id="eqp-filter-mes" class="w-full p-2 border rounded outline-none focus:border-blue-600 font-medium bg-slate-50" onchange="renderEquipe()">
+              <option value="01">Janeiro</option><option value="02">Fevereiro</option><option value="03">Março</option>
+              <option value="04">Abril</option><option value="05">Maio</option><option value="06">Junho</option>
+              <option value="07">Julho</option><option value="08">Agosto</option><option value="09">Setembro</option>
+              <option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Ano</label>
+            <input type="number" id="eqp-filter-ano" class="w-full p-2 border rounded outline-none focus:border-blue-600 font-medium bg-slate-50" onchange="renderEquipe()">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Filtrar por Obra</label>
+            <select id="eqp-obra-filter" class="w-full p-2 border rounded outline-none focus:border-blue-600 font-medium bg-slate-50" onchange="renderEquipe()">
+              <option value="">Todas as Obras</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Buscar Nome</label>
+            <div class="relative w-full">
+              <i data-lucide="search" class="absolute left-3 top-2.5 text-slate-400 w-5 h-5"></i>
+              <input type="text" id="eqp-search" placeholder="Buscar funcionário..." class="w-full pl-10 p-2 border rounded outline-none focus:border-blue-600 font-medium bg-slate-50" onkeyup="renderEquipe()">
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left whitespace-nowrap">
+              <thead class="bg-slate-100 text-slate-700 border-b">
+                <tr>
+                  <th class="p-4">Funcionário / Categoria</th>
+                  <th class="p-4">Obra Vinculada</th>
+                  <th class="p-4 text-center">Diária (R$)</th>
+                  <th class="p-4 text-center">Dias Trab.</th>
+                  <th class="p-4 text-right">Total a Pagar</th>
+                  <th class="p-4 text-center">Status</th>
+                  <th class="p-4 text-center">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="equipe-list" class="divide-y"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== VIEW: FORNECEDORES ==================== -->
+      <div id="view-fornecedores" class="hidden-section">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-2xl font-bold text-slate-800">Fornecedores</h2>
+          <button onclick="openFornecedorForm()" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded font-bold shadow flex items-center gap-2"><i data-lucide="plus"></i> Novo Fornecedor</button>
+        </div>
+        <div class="mb-4 bg-white p-4 rounded-xl shadow-sm border">
+          <div class="relative w-full">
+            <i data-lucide="search" class="absolute left-3 top-2.5 text-slate-400 w-5 h-5"></i>
+            <input type="text" id="forn-search" placeholder="Buscar fornecedor por nome, telefone ou documento..." class="w-full pl-10 p-2 border rounded outline-none focus:border-blue-600 font-medium" onkeyup="renderFornecedores()">
+          </div>
+        </div>
+        <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
+          <table class="w-full text-sm text-left">
+            <thead class="bg-slate-100 text-slate-700"><tr><th class="p-4">Nome</th><th class="p-4">Telefone</th><th class="p-4">Documento</th><th class="p-4 text-center">Ações</th></tr></thead>
+            <tbody id="fornecedores-list" class="divide-y"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ==================== VIEW: PRODUTOS ==================== -->
+      <div id="view-prod" class="hidden-section">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-2xl font-bold text-slate-800">Materiais / Insumos</h2>
+          <button onclick="openProductForm()" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded font-bold shadow flex items-center gap-2"><i data-lucide="plus"></i> Novo Material</button>
+        </div>
+        <div class="flex gap-2 mb-4 bg-white p-4 rounded-xl shadow-sm border">
+          <input type="text" id="prod-search" placeholder="Buscar material..." class="w-full p-2 border rounded outline-none focus:border-blue-600 font-medium" onkeyup="renderProducts()">
+        </div>
+        <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
+          <table class="w-full text-sm text-left">
+            <thead class="bg-slate-100 text-slate-700"><tr><th class="p-4">Material</th><th class="p-4">Preço Ref. (R$)</th><th class="p-4 text-center">Editar</th></tr></thead>
+            <tbody id="prod-list" class="divide-y"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ==================== VIEW: FASES ==================== -->
+      <div id="view-fases" class="hidden-section">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2"><i data-lucide="layers" class="text-blue-700"></i> Fases de Obra</h2>
+          <button onclick="openFaseForm()" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded font-bold shadow flex items-center gap-2"><i data-lucide="plus"></i> Nova Fase</button>
+        </div>
+        <div class="mb-4 bg-white p-4 rounded-xl shadow-sm border">
+          <div class="relative w-full">
+            <i data-lucide="search" class="absolute left-3 top-2.5 text-slate-400 w-5 h-5"></i>
+            <input type="text" id="fase-search" placeholder="Buscar fase por nome..." class="w-full pl-10 p-2 border rounded outline-none focus:border-blue-600 font-medium" onkeyup="renderFases()">
+          </div>
+        </div>
+        <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
+          <table class="w-full text-sm text-left">
+            <thead class="bg-slate-100 text-slate-700"><tr><th class="p-4 w-24 text-center">Ordem</th><th class="p-4">Nome da Fase</th><th class="p-4 text-center w-32">Ações</th></tr></thead>
+            <tbody id="fases-list" class="divide-y"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ==================== VIEW: RELATÓRIOS ==================== -->
+      <div id="view-reports" class="hidden-section">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2"><i data-lucide="pie-chart" class="text-blue-700"></i> Relatórios Avançados</h2>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-sm border mb-6">
+          <h3 class="text-sm font-bold text-slate-500 uppercase mb-4">Filtros do Relatório</h3>
+          <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Obra</label>
+              <select id="rep-obra" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none text-sm font-medium"></select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Fase da Obra</label>
+              <select id="rep-fase" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none text-sm font-medium">
+                <option value="">Todas as Fases</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Tipo de Relatório</label>
+              <select id="rep-tipo" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none text-sm font-medium">
+                <option value="geral">Acompanhamento Geral (Resumo)</option>
+                <option value="despesas">Apenas Despesas (Gastos)</option>
+                <option value="receitas">Apenas Medições (Receitas)</option>
+                <option value="todos">Extrato Completo (Tudo)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Mês</label>
+              <select id="rep-mes" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none text-sm font-medium">
+                <option value="">Todo o Período</option>
+                <option value="01">Janeiro</option><option value="02">Fevereiro</option><option value="03">Março</option>
+                <option value="04">Abril</option><option value="05">Maio</option><option value="06">Junho</option>
+                <option value="07">Julho</option><option value="08">Agosto</option><option value="09">Setembro</option>
+                <option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Ano</label>
+              <input type="number" id="rep-ano" placeholder="Ex: 2026" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none text-sm font-medium">
+            </div>
+          </div>
+          <div class="mt-4 flex justify-end gap-3">
+            <button onclick="gerarRelatorio()" class="bg-slate-800 hover:bg-slate-900 text-white px-6 py-2 rounded-lg font-bold shadow-md flex items-center gap-2"><i data-lucide="search" class="w-4 h-4"></i> Gerar Visualização</button>
+            <button onclick="imprimirRelatorio()" class="bg-blue-700 hover:bg-blue-800 text-white px-6 py-2 rounded-lg font-bold shadow-md flex items-center gap-2"><i data-lucide="printer" class="w-4 h-4"></i> Imprimir</button>
+          </div>
+        </div>
+        <div id="report-container" class="bg-white rounded-xl shadow-sm border p-6 min-h-[400px]">
+          <div class="flex flex-col items-center justify-center h-full text-slate-400 opacity-50 pt-20">
+            <i data-lucide="file-bar-chart" class="w-16 h-16 mb-4"></i>
+            <p>Selecione os filtros acima e clique em "Gerar Visualização".</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== VIEW: USUÁRIOS ==================== -->
+      <div id="view-users" class="hidden-section">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2"><i data-lucide="shield" class="text-blue-600"></i> Gerenciar Usuários</h2>
+          <button onclick="openUserForm()" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded font-bold shadow flex items-center gap-2"><i data-lucide="plus"></i> Novo Usuário</button>
+        </div>
+        <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
+          <table class="w-full text-sm text-left">
+            <thead class="bg-slate-100 text-slate-700"><tr><th class="p-4">Nome</th><th class="p-4">Usuário (Login)</th><th class="p-4">Nível</th><th class="p-4 text-center">Status</th><th class="p-4 text-center">Ações</th></tr></thead>
+            <tbody id="users-list" class="divide-y"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ==================== VIEW: TERCEIRIZADOS ==================== -->
+      <div id="view-terc" class="hidden-section max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+          <div>
+            <h2 class="text-3xl font-black text-slate-800 tracking-tight">Terceirizados / Empreiteiros</h2>
+            <p class="text-slate-500 font-medium mt-1">Gestão de produção por metragem</p>
+          </div>
+          <button onclick="openTercForm()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-blue-200 transition flex items-center gap-2">
+            <i data-lucide="plus-circle" width="20"></i> Novo Terceirizado
+          </button>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm mb-6 flex flex-wrap gap-4 items-end">
+          <div class="w-full md:w-auto flex-1 min-w-[200px]">
+            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Buscar Nome</label>
+            <input type="text" id="terc-search" onkeyup="renderTerceirizados()" placeholder="Nome ou Documento..." class="w-full p-2.5 border border-slate-300 rounded-lg focus:border-blue-500 outline-none text-sm font-medium">
+          </div>
+          <div class="w-full md:w-32">
+            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Status</label>
+            <select id="terc-filter-status" onchange="renderTerceirizados()" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm font-bold bg-slate-50 outline-none">
+              <option value="true" selected>Ativados</option>
+              <option value="false">Desativados</option>
+              <option value="todos">Todos</option>
+            </select>
+          </div>
+          <div class="w-full md:w-32">
+            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Mês Ref.</label>
+            <select id="terc-filter-mes" onchange="renderTerceirizados()" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm font-bold bg-slate-50 outline-none">
+              <option value="01">Janeiro</option><option value="02">Fevereiro</option><option value="03">Março</option><option value="04">Abril</option><option value="05">Maio</option><option value="06">Junho</option><option value="07">Julho</option><option value="08">Agosto</option><option value="09">Setembro</option><option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option>
+            </select>
+          </div>
+          <div class="w-full md:w-44">
+            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Pagamento</label>
+            <select id="terc-filter-pagamento" onchange="renderTerceirizados()" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm font-bold bg-slate-50 outline-none">
+              <option value="pendente">Apenas Pendentes</option>
+              <option value="pago">Apenas Pagos</option>
+              <option value="todos" selected>Todos (Mês)</option>
+            </select>
+          </div>
+          <div class="w-full md:w-24">
+            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Ano</label>
+            <input type="number" id="terc-filter-ano" onchange="renderTerceirizados()" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm font-bold bg-slate-50 outline-none text-center">
+          </div>
+          <div class="w-full md:w-auto">
+            <button onclick="imprimirRelatorioTerc()" class="w-full md:w-auto p-2.5 border border-slate-300 text-slate-700 hover:bg-slate-100 rounded-lg font-bold flex items-center justify-center gap-2 text-sm shadow-sm">
+              <i data-lucide="printer" width="16"></i> Folha
+            </button>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden overflow-x-auto">
+          <table class="w-full text-left border-collapse min-w-[800px]">
+            <thead>
+              <tr class="bg-slate-800 text-white text-xs uppercase">
+                <th class="p-4 font-bold">Terceirizado</th>
+                <th class="p-4 font-bold text-center">Valor do Metro</th>
+                <th class="p-4 font-bold text-center">Produção no Mês</th>
+                <th class="p-4 font-bold text-right">Total (Mês)</th>
+                <th class="p-4 font-bold text-center w-48">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="terc-list"></tbody>
+          </table>
+        </div>
+      </div>
 
     </main>
 
-    <script src="js/core/router.js"></script>
-    <script>
-        // Inicializa os ícones do Lucide após carregar a página
-        lucide.createIcons();
-    </script>
+    <!-- ======================================================== -->
+    <!-- ÁREA DE IMPRESSÃO                                          -->
+    <!-- ======================================================== -->
+    <div id="print-area" class="print-only"></div>
+
+    <!-- ======================================================== -->
+    <!-- MODAIS                                                     -->
+    <!-- ======================================================== -->
+
+    <!-- Modal: Obra -->
+    <div id="obra-form-container" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+      <form onsubmit="saveObra(event)" class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-md">
+        <h3 class="font-bold text-lg mb-4 text-blue-800 flex items-center gap-2"><i data-lucide="building"></i> Dados da Obra</h3>
+        <input type="hidden" id="obra-id">
+        <div class="space-y-3">
+          <div><label class="block text-xs font-bold text-slate-500 uppercase">Nome / Identificação da Obra</label><input type="text" id="obra-name" required class="w-full p-2 border rounded outline-none focus:border-blue-600"></div>
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase">Valor do Contrato (Saldo da Obra R$)</label>
+            <input type="number" step="0.01" id="obra-contrato" required placeholder="Ex: 1000000.00" class="w-full p-2 border rounded outline-none focus:border-blue-600 font-bold text-blue-700 bg-blue-50">
+            <p class="text-[10px] text-slate-400 mt-1">Este valor serve como teto para as medições e caixa.</p>
+          </div>
+          <div><label class="block text-xs font-bold text-slate-500 uppercase">Endereço / Localização</label><input type="text" id="obra-addr" class="w-full p-2 border rounded outline-none focus:border-blue-600"></div>
+          <div><label class="block text-xs font-bold text-slate-500 uppercase">Órgão / Solicitante / Prefeitura</label><input type="text" id="obra-solic" class="w-full p-2 border rounded outline-none focus:border-blue-600"></div>
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase">Previsão de Término (Contrato)</label>
+            <input type="date" id="obra-termino" required class="w-full p-2 border rounded outline-none focus:border-blue-600 font-bold text-slate-700">
+          </div>
+        </div>
+        <div class="flex gap-2 mt-6">
+          <button type="button" onclick="document.getElementById('obra-form-container').classList.add('hidden')" class="flex-1 p-3 bg-slate-200 text-slate-700 rounded-lg font-bold hover:bg-slate-300">Cancelar</button>
+          <button type="submit" class="flex-1 p-3 bg-blue-700 text-white rounded-lg font-bold hover:bg-blue-800 shadow-md">Salvar</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Modal: Confirmar O.C. -->
+    <div id="modal-confirm-oc" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+      <div class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-md">
+        <h3 class="font-bold text-lg mb-4 text-slate-800 flex items-center gap-2"><i data-lucide="check-circle" class="text-blue-600"></i> Confirmar Compra</h3>
+        <p class="text-sm text-slate-600 mb-4">Selecione a forma de pagamento. PIX já entra como pago no caixa. Cartões ou Medição entram como pendente para daqui a 30 dias.</p>
+        <input type="hidden" id="confirm-oc-id">
+        <div class="space-y-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase">Forma de Pagamento Acordada</label>
+            <select id="confirm-oc-payment" class="w-full p-2 border rounded-lg outline-none focus:border-blue-600 font-bold text-slate-700">
+              <option value="PIX">PIX</option>
+              <option value="Cartão de Crédito">Cartão de Crédito</option>
+              <option value="Cartão de Débito">Cartão de Débito</option>
+              <option value="Boleto">Boleto</option>
+              <option value="Medição">Medição</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex gap-2 mt-6">
+          <button type="button" onclick="document.getElementById('modal-confirm-oc').classList.add('hidden')" class="flex-1 p-3 bg-slate-200 text-slate-700 rounded-lg font-bold hover:bg-slate-300">Cancelar</button>
+          <button onclick="executeConfirmOC()" class="flex-1 p-3 bg-blue-700 text-white rounded-lg font-bold hover:bg-blue-800 shadow-md">Efetivar Compra</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Equipe / Funcionário -->
+    <div id="equipe-form-container" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+      <form onsubmit="saveEquipe(event)" class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+        <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="user-plus" class="text-blue-600"></i> Membro da Equipe</h3>
+        <input type="hidden" id="eqp-id">
+        <div class="space-y-3">
+          <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Nome Completo</label><input type="text" id="eqp-name" required class="w-full p-2 border rounded focus:border-blue-600 outline-none bg-slate-50"></div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[10px] font-bold text-slate-500 uppercase">Categoria / Função</label>
+              <select id="eqp-cat" class="w-full p-2 border rounded focus:border-blue-600 outline-none bg-slate-50">
+                <option value="" disabled selected>-- Selecione --</option>
+                <option value="Pedreiro">Pedreiro</option>
+                <option value="Servente">Servente</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-slate-500 uppercase">Telefone</label>
+              <input type="text" id="eqp-phone" class="w-full p-2 border rounded focus:border-blue-600 outline-none bg-slate-50">
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="block text-[10px] font-bold text-slate-500 uppercase">CPF</label><input type="text" id="eqp-cpf" class="w-full p-2 border rounded focus:border-blue-600 outline-none bg-slate-50"></div>
+            <div><label class="block text-[10px] font-bold text-slate-500 uppercase">RG</label><input type="text" id="eqp-rg" class="w-full p-2 border rounded focus:border-blue-600 outline-none bg-slate-50"></div>
+          </div>
+          <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Endereço Completo</label><input type="text" id="eqp-endereco" class="w-full p-2 border rounded focus:border-blue-600 outline-none bg-slate-50"></div>
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Chave PIX</label>
+            <input type="text" id="eqp-pix" class="w-full p-2 border border-slate-300 rounded-lg bg-slate-50 focus:bg-white focus:border-blue-500 outline-none" placeholder="CPF, Celular, E-mail ou Aleatória">
+          </div>
+          <div class="grid grid-cols-2 gap-3 pt-2 border-t mt-2">
+            <div class="col-span-2"><label class="block text-[10px] font-bold text-slate-500 uppercase">Obra Vinculada (Atual)</label><select id="eqp-obra" class="w-full p-2 border rounded focus:border-blue-600 outline-none font-bold text-blue-700 bg-blue-50"></select></div>
+            <div>
+              <label class="block text-[10px] font-bold text-slate-500 uppercase">Data de Início (Contrato)</label>
+              <input type="date" id="eqp-contrato" class="w-full p-2 border rounded focus:border-blue-600 outline-none bg-white font-bold text-slate-700">
+            </div>
+            <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Valor da Diária (R$)</label><input type="number" step="0.01" id="eqp-diaria" class="w-full p-2 border rounded focus:border-blue-600 outline-none font-black text-green-700 bg-green-50"></div>
+          </div>
+        </div>
+        <div class="flex gap-2 mt-6">
+          <button type="button" onclick="document.getElementById('equipe-form-container').classList.add('hidden')" class="flex-1 p-2 bg-slate-200 rounded font-bold hover:bg-slate-300 text-slate-700">Cancelar</button>
+          <button type="submit" class="flex-1 p-2 bg-blue-700 text-white rounded font-bold hover:bg-blue-800">Salvar</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Modal: Ponto Eletrônico -->
+    <div id="ponto-modal" class="hidden fixed inset-0 bg-black/65 flex items-center justify-center z-50 p-4">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[95vh]">
+        <div class="bg-indigo-600 p-4 text-white flex justify-between items-center shrink-0">
+          <div class="flex items-center gap-3">
+            <button id="ponto-btn-voltar" onclick="selecionarModoPonto('selecao')" class="hidden bg-indigo-700 hover:bg-indigo-800 p-1.5 rounded-lg transition" title="Voltar">
+              <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            </button>
+            <div>
+              <h3 class="font-black text-lg flex items-center gap-2">Fechamento de Ponto</h3>
+              <p id="ponto-modal-subtitle" class="text-[11px] font-medium opacity-80 mt-0.5">Carregando...</p>
+            </div>
+          </div>
+          <button onclick="document.getElementById('ponto-modal').classList.add('hidden')" class="text-white hover:bg-white/20 p-2 rounded-lg transition" title="Fechar">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+        <div class="p-6 overflow-y-auto flex-1">
+          <input type="hidden" id="ponto-equipe-id">
+
+          <!-- Seleção de Modo -->
+          <div id="ponto-view-selecao" class="flex flex-col gap-4">
+            <h4 class="text-center font-bold text-slate-600 mb-2">Como deseja fechar o ponto deste mês?</h4>
+            <button onclick="selecionarModoPonto('auto')" class="p-6 border-2 border-blue-200 hover:border-blue-500 rounded-2xl bg-blue-50 hover:bg-blue-100 flex flex-col items-center gap-3 transition text-center group">
+              <div class="p-4 bg-blue-600 text-white rounded-full group-hover:scale-110 transition-transform"><i data-lucide="smartphone-nfc" class="w-8 h-8"></i></div>
+              <div><h5 class="font-black text-lg text-blue-800">Ponto Eletrônico (QR Code)</h5><p class="text-xs text-blue-600 mt-1 font-medium">Busca os registros automáticos do app, calcula as horas e gera a folha de ponto.</p></div>
+            </button>
+            <button onclick="selecionarModoPonto('manual')" class="p-6 border-2 border-slate-200 hover:border-slate-400 rounded-2xl bg-slate-50 hover:bg-slate-100 flex flex-col items-center gap-3 transition text-center group">
+              <div class="p-4 bg-slate-400 text-white rounded-full group-hover:scale-110 transition-transform"><i data-lucide="calendar-check-2" class="w-8 h-8"></i></div>
+              <div><h5 class="font-black text-lg text-slate-700">Ponto Manual (Antigo)</h5><p class="text-xs text-slate-500 mt-1 font-medium">Você marca os dias trabalhados clicando no calendário.</p></div>
+            </button>
+          </div>
+
+          <!-- Modo Manual -->
+          <div id="ponto-view-manual" class="hidden">
+            <div class="grid grid-cols-7 gap-1 mb-2">
+              <div class="text-center text-[10px] font-black text-red-500 uppercase">Dom</div>
+              <div class="text-center text-[10px] font-black text-slate-400 uppercase">Seg</div>
+              <div class="text-center text-[10px] font-black text-slate-400 uppercase">Ter</div>
+              <div class="text-center text-[10px] font-black text-slate-400 uppercase">Qua</div>
+              <div class="text-center text-[10px] font-black text-slate-400 uppercase">Qui</div>
+              <div class="text-center text-[10px] font-black text-slate-400 uppercase">Sex</div>
+              <div class="text-center text-[10px] font-black text-slate-400 uppercase">Sáb</div>
+            </div>
+            <div id="ponto-grid" class="grid grid-cols-7 gap-2 mb-6"></div>
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-inner mb-4">
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-xs font-bold text-slate-500 uppercase">Total de Diárias:</span>
+                <span id="ponto-total-dias" class="font-black text-indigo-700 text-xl">0</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-bold text-slate-500 uppercase">Valor a Pagar:</span>
+                <span id="ponto-total-valor" class="font-black text-green-600 text-2xl">R$ 0,00</span>
+              </div>
+            </div>
+            <button type="button" onclick="savePonto()" class="w-full py-3 text-sm font-black bg-green-600 hover:bg-green-700 text-white rounded-xl shadow-md flex items-center justify-center gap-2 transition">
+              <i data-lucide="check-circle" class="w-5 h-5"></i> Salvar Fechamento Manual
+            </button>
+          </div>
+
+          <!-- Modo Automático -->
+          <div id="ponto-view-auto" class="hidden flex flex-col">
+            <div class="flex gap-2 mb-4">
+              <div class="flex-1">
+                <label class="text-[10px] font-bold text-slate-500 uppercase">De:</label>
+                <input type="date" id="ponto-auto-data-ini" class="w-full p-2 border rounded-lg text-sm bg-slate-50 font-bold focus:border-blue-500 outline-none">
+              </div>
+              <div class="flex-1">
+                <label class="text-[10px] font-bold text-slate-500 uppercase">Até:</label>
+                <input type="date" id="ponto-auto-data-fim" class="w-full p-2 border rounded-lg text-sm bg-slate-50 font-bold focus:border-blue-500 outline-none">
+              </div>
+              <div class="flex items-end">
+                <button onclick="buscarRegistrosEletronicos()" class="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow font-bold text-sm h-[38px] px-4"><i data-lucide="search" class="w-4 h-4"></i></button>
+              </div>
+            </div>
+            <div class="border rounded-xl overflow-hidden border-slate-200 mb-4">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-100 border-b border-slate-200 text-slate-600">
+                    <th class="p-2 text-[10px] uppercase font-bold text-center">Data</th>
+                    <th class="p-2 text-[10px] uppercase font-bold text-center">Manhã</th>
+                    <th class="p-2 text-[10px] uppercase font-bold text-center">Tarde</th>
+                    <th class="p-2 text-[10px] uppercase font-bold text-center">Diária (Fração)</th>
+                  </tr>
+                </thead>
+                <tbody id="ponto-auto-tbody"></tbody>
+              </table>
+            </div>
+            <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 shadow-inner mb-4">
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-xs font-bold text-blue-800 uppercase">Total de Diárias Apuradas:</span>
+                <span id="ponto-auto-total-dias" class="font-black text-blue-700 text-xl">0.00</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-bold text-blue-800 uppercase">Valor a Pagar:</span>
+                <span id="ponto-auto-total-valor" class="font-black text-green-700 text-2xl">R$ 0,00</span>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <button type="button" onclick="imprimirFolhaPontoEletronico()" class="py-3 text-xs font-black border-2 border-slate-300 text-slate-600 hover:bg-slate-100 rounded-xl flex items-center justify-center gap-2 transition">
+                <i data-lucide="printer" class="w-4 h-4"></i> Imprimir Folha
+              </button>
+              <button type="button" onclick="savePonto()" class="py-3 text-xs font-black bg-green-600 hover:bg-green-700 text-white rounded-xl shadow-md flex items-center justify-center gap-2 transition">
+                <i data-lucide="check-circle" class="w-4 h-4"></i> Salvar Fechamento
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Fornecedor -->
+    <div id="fornecedor-form-container" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+      <form onsubmit="saveFornecedor(event)" class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-md">
+        <h3 class="font-bold text-lg mb-4">Dados do Fornecedor</h3>
+        <input type="hidden" id="forn-id">
+        <div class="space-y-3">
+          <input type="text" id="forn-name" required placeholder="Nome do Fornecedor / Empresa" class="w-full p-2 border rounded">
+          <input type="text" id="forn-phone" placeholder="Telefone / WhatsApp" class="w-full p-2 border rounded">
+          <input type="text" id="forn-doc" placeholder="CNPJ / CPF" class="w-full p-2 border rounded">
+          <input type="text" id="forn-addr" placeholder="Endereço" class="w-full p-2 border rounded">
+        </div>
+        <div class="flex gap-2 mt-6">
+          <button type="button" onclick="document.getElementById('fornecedor-form-container').classList.add('hidden')" class="flex-1 p-2 bg-slate-200 rounded font-bold hover:bg-slate-300">Cancelar</button>
+          <button type="submit" class="flex-1 p-2 bg-blue-700 text-white rounded font-bold hover:bg-blue-800">Salvar</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Modal: Selecionar Fornecedor (POS) -->
+    <div id="pos-fornecedor-modal" class="hidden fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl flex flex-col max-h-[90vh]">
+        <div class="p-4 border-b flex justify-between items-center bg-slate-50 rounded-t-2xl">
+          <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2"><i data-lucide="users" class="text-blue-600"></i> Selecionar Fornecedor</h3>
+          <button onclick="closePosFornecedorModal()" class="text-slate-400 hover:text-red-500"><i data-lucide="x"></i></button>
+        </div>
+        <div class="p-4 border-b">
+          <div class="relative w-full">
+            <i data-lucide="search" class="absolute left-3 top-3.5 text-slate-400 w-5 h-5"></i>
+            <input type="text" id="pos-fornecedor-modal-search" placeholder="Buscar fornecedor..." class="w-full pl-10 p-3 border-2 border-slate-200 rounded-xl font-bold outline-none focus:border-blue-600" onkeyup="renderPosFornecedorModal()">
+          </div>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 bg-slate-100/50">
+          <div id="pos-fornecedor-modal-grid" class="flex flex-col gap-2"></div>
+        </div>
+        <div class="p-4 border-t bg-slate-50 rounded-b-2xl">
+          <button onclick="selectPosFornecedor('', 'A Definir')" class="w-full py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition">Limpar (A Definir)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Selecionar Produto (POS) -->
+    <div id="pos-product-modal" class="hidden fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl flex flex-col max-h-[90vh]">
+        <div class="p-4 border-b flex justify-between items-center bg-slate-50 rounded-t-2xl">
+          <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2"><i data-lucide="package-search" class="text-blue-600"></i> Selecionar Material</h3>
+          <button onclick="closePosProductModal()" class="text-slate-400 hover:text-red-500"><i data-lucide="x"></i></button>
+        </div>
+        <div class="p-4 border-b">
+          <div class="relative w-full">
+            <i data-lucide="search" class="absolute left-3 top-3.5 text-slate-400 w-5 h-5"></i>
+            <input type="text" id="pos-modal-search" placeholder="Digite o nome..." class="w-full pl-10 p-3 border-2 border-slate-200 rounded-xl font-bold outline-none focus:border-blue-600" onkeyup="renderPosProductModal()">
+          </div>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 bg-slate-100/50">
+          <div id="pos-modal-grid" class="flex flex-col gap-2"></div>
+        </div>
+        <div class="p-4 border-t bg-slate-50 rounded-b-2xl">
+          <button onclick="closePosProductModal()" class="w-full py-3 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl transition">Concluído</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Produto -->
+    <div id="prod-form-container" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+      <form onsubmit="saveProduct(event)" class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-md">
+        <h3 class="font-bold text-lg mb-4">Material / Insumo</h3>
+        <input type="hidden" id="prd-id">
+        <div class="space-y-3">
+          <input type="text" id="prd-name" required placeholder="Nome do Material (Ex: Cimento, Prego)" class="w-full p-2 border rounded">
+          <input type="text" id="prd-cat" placeholder="Categoria (Ex: Alvenaria, Hidráulica)" class="w-full p-2 border rounded">
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase">Preço Referência (R$)</label>
+            <input type="number" id="prd-price" required step="0.01" placeholder="Ex: 35.00" class="w-full p-2 border rounded">
+          </div>
+        </div>
+        <div class="flex gap-2 mt-6">
+          <button type="button" onclick="document.getElementById('prod-form-container').classList.add('hidden')" class="flex-1 p-2 bg-slate-200 rounded font-bold hover:bg-slate-300">Cancelar</button>
+          <button type="submit" class="flex-1 p-2 bg-blue-700 text-white rounded font-bold hover:bg-blue-800">Salvar</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Modal: Fase -->
+    <div id="fase-form-container" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+      <form onsubmit="saveFase(event)" class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-md">
+        <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="layers" class="text-blue-600"></i> Fase da Obra</h3>
+        <input type="hidden" id="fas-id">
+        <div class="space-y-3">
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase">Ordem de Exibição (Ex: 1, 2, 3...)</label>
+            <input type="number" id="fas-ordem" required placeholder="1" class="w-full p-2 border rounded font-bold text-blue-700 bg-blue-50 focus:border-blue-600 outline-none">
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase">Nome da Fase (Ex: LAJE, ALVENARIA)</label>
+            <input type="text" id="fas-name" required placeholder="Nome da Fase" class="w-full p-2 border rounded uppercase focus:border-blue-600 outline-none">
+          </div>
+        </div>
+        <div class="flex gap-2 mt-6">
+          <button type="button" onclick="document.getElementById('fase-form-container').classList.add('hidden')" class="flex-1 p-2 bg-slate-200 rounded font-bold hover:bg-slate-300 text-slate-700">Cancelar</button>
+          <button type="submit" class="flex-1 p-2 bg-blue-700 text-white rounded font-bold hover:bg-blue-800 shadow-md">Salvar</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Modal: Despesa -->
+    <div id="modal-expense" class="hidden fixed inset-0 bg-black/60 z-50 flex justify-center items-center p-4">
+      <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
+        <div class="p-5 border-b flex justify-between items-center bg-slate-50">
+          <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2"><i data-lucide="minus-circle" class="text-red-500"></i> Lançar Despesa / Custo</h3>
+          <button onclick="document.getElementById('modal-expense').classList.add('hidden')" class="text-slate-400 hover:text-red-500"><i data-lucide="x"></i></button>
+        </div>
+        <div class="p-6 space-y-4 overflow-y-auto">
+          <input type="hidden" id="exp-id">
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-1">Obra (Centro de Custo)</label>
+            <select id="exp-obra" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-600 outline-none bg-white font-bold text-slate-700"></select>
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-1">Fase da Obra</label>
+            <select id="exp-fase" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-600 outline-none bg-white font-bold text-slate-700">
+              <option value="">-- Não especificada --</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-1">Categoria</label>
+            <input type="text" id="exp-categoria" placeholder="Ex: Ferragem, Hidráulica, Acabamento" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-600 outline-none bg-white font-medium">
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-1">Tipo de Lançamento</label>
+            <select id="exp-tipo" onchange="toggleEquipeSelect()" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-600 outline-none bg-white font-bold text-slate-700">
+              <option value="Material/Produto">Material / Produto</option>
+              <option value="Mão de Obra">Mão de Obra</option>
+              <option value="Escritório">Escritório</option>
+              <option value="Despesa Eventual">Despesa Eventual</option>
+            </select>
+          </div>
+          <div id="exp-equipe-wrapper" class="hidden">
+            <label class="block text-sm font-bold text-slate-700 mb-1">Membro da Equipe</label>
+            <select id="exp-equipe" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-600 outline-none bg-white font-bold text-blue-700"></select>
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-1">Descrição da Despesa</label>
+            <input type="text" id="exp-item" placeholder="Ex: Combustível, Taxa, Adiantamento..." class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-600 outline-none">
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-1">Valor Total (R$)</label>
+            <input type="number" step="0.01" id="exp-cost" placeholder="0.00" class="w-full p-3 border rounded-xl font-bold text-red-600 focus:ring-2 focus:ring-blue-600 outline-none">
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-1">Data (Vencimento/Pagamento)</label>
+            <input type="date" id="exp-date" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-600 outline-none">
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-1">Status</label>
+            <select id="exp-status-val" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-600 outline-none font-bold">
+              <option value="PENDENTE">Pendente a Pagar</option>
+              <option value="PAGO">Já Pago</option>
+            </select>
+          </div>
+        </div>
+        <div class="p-5 border-t bg-slate-50 flex gap-3">
+          <button onclick="document.getElementById('modal-expense').classList.add('hidden')" class="flex-1 py-3 bg-white border border-slate-300 rounded-xl font-bold text-slate-600 hover:bg-slate-100">Cancelar</button>
+          <button onclick="saveExpense()" class="flex-1 py-3 bg-red-600 rounded-xl font-bold text-white hover:bg-red-700 shadow-lg">Salvar Despesa</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Medição (Receita) -->
+    <div id="modal-revenue" class="hidden fixed inset-0 bg-black/60 z-50 flex justify-center items-center p-4">
+      <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
+        <div class="p-5 border-b flex justify-between items-center bg-slate-50">
+          <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2"><i data-lucide="plus-circle" class="text-green-600"></i> Lançar Medição (Receita)</h3>
+          <button onclick="document.getElementById('modal-revenue').classList.add('hidden')" class="text-slate-400 hover:text-red-500"><i data-lucide="x"></i></button>
+        </div>
+        <div class="p-6 space-y-4 overflow-y-auto">
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-1">Obra (Destino da Medição)</label>
+            <select id="rev-obra" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-600 outline-none bg-white font-bold text-slate-700"></select>
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-1">Fase da Obra</label>
+            <select id="rev-fase" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-600 outline-none bg-white font-bold text-slate-700">
+              <option value="">-- Não especificada --</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-1">Descrição da Medição</label>
+            <input type="text" id="rev-desc" placeholder="Ex: Medição 01 - Aporte Prefeitura..." class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-600 outline-none bg-white">
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-1">Valor Recebido (R$)</label>
+            <input type="number" step="0.01" id="rev-val" placeholder="0.00" class="w-full p-3 border rounded-xl font-bold text-green-700 focus:ring-2 focus:ring-blue-600 outline-none">
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-1">Data de Recebimento</label>
+            <input type="date" id="rev-due" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-600 outline-none">
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-1">Status</label>
+            <select id="rev-status-val" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-600 outline-none font-bold">
+              <option value="PENDENTE">A Receber (Previsão)</option>
+              <option value="PAGO">Recebido / Em Caixa</option>
+            </select>
+          </div>
+        </div>
+        <div class="p-5 border-t bg-slate-50 flex gap-3">
+          <button onclick="document.getElementById('modal-revenue').classList.add('hidden')" class="flex-1 py-3 bg-white border border-slate-300 rounded-xl font-bold text-slate-600 hover:bg-slate-100">Cancelar</button>
+          <button onclick="saveRevenue()" class="flex-1 py-3 bg-green-600 rounded-xl font-bold text-white hover:bg-green-700 shadow-lg">Salvar Medição</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Usuário -->
+    <div id="user-form-container" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+      <form onsubmit="saveUser(event)" class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-md">
+        <h3 class="font-bold text-lg mb-4 text-slate-800 flex items-center gap-2"><i data-lucide="user-plus" class="text-blue-600"></i> Dados do Usuário</h3>
+        <input type="hidden" id="usr-id">
+        <div class="space-y-3">
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase">Nome Completo</label>
+            <input type="text" id="usr-name" required class="w-full p-2 border rounded outline-none focus:border-blue-600">
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase">Login (Usuário)</label>
+            <input type="text" id="usr-login" required class="w-full p-2 border rounded outline-none focus:border-blue-600">
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase">Senha (Somente números)</label>
+            <input type="password" id="usr-pass" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" placeholder="Deixe em branco para não alterar" class="w-full p-2 border rounded outline-none focus:border-blue-600">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[10px] font-bold text-slate-500 uppercase">Nível de Acesso</label>
+              <select id="usr-level" class="w-full p-2 border rounded outline-none focus:border-blue-600 font-bold">
+                <option value="comprador">Comprador</option>
+                <option value="admin">Administrador</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-slate-500 uppercase">Status</label>
+              <select id="usr-status" class="w-full p-2 border rounded outline-none focus:border-blue-600 font-bold">
+                <option value="true">Ativo</option>
+                <option value="false">Inativo</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="flex gap-2 mt-6">
+          <button type="button" onclick="document.getElementById('user-form-container').classList.add('hidden')" class="flex-1 p-2 bg-slate-200 rounded font-bold hover:bg-slate-300">Cancelar</button>
+          <button type="submit" class="flex-1 p-2 bg-blue-700 text-white rounded font-bold hover:bg-blue-800">Salvar</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Modal: Transferir para RV Portal -->
+    <div id="modal-transf-portal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+      <div class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-sm border-t-4 border-t-indigo-600">
+        <h3 class="font-bold text-lg mb-2 text-slate-800 flex items-center gap-2">
+          <i data-lucide="send" class="text-indigo-600"></i> Enviar para RV Portal
+        </h3>
+        <p class="text-xs text-slate-500 mb-4">Esta ação vai gerar um orçamento automaticamente no sistema da RV Portal. Digite a senha de autorização:</p>
+        <input type="hidden" id="transf-oc-id">
+        <div class="space-y-3">
+          <input type="password" id="transf-senha" placeholder="********" class="w-full p-3 border-2 rounded-lg outline-none focus:border-indigo-600 font-bold text-center tracking-widest text-lg">
+        </div>
+        <div class="flex gap-2 mt-6">
+          <button type="button" onclick="document.getElementById('modal-transf-portal').classList.add('hidden')" class="flex-1 p-3 bg-slate-200 text-slate-700 rounded-lg font-bold hover:bg-slate-300">Cancelar</button>
+          <button onclick="executarTransferenciaPortal()" class="flex-1 p-3 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 shadow-md flex items-center justify-center gap-2">
+            <i data-lucide="arrow-right-circle" class="w-4 h-4"></i> Transferir
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Histórico de Produto -->
+    <div id="modal-prod-history" class="hidden fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl flex flex-col max-h-[90vh] overflow-hidden">
+        <div class="p-4 border-b flex justify-between items-center bg-slate-50">
+          <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">
+            <i data-lucide="history" class="text-indigo-600"></i> Histórico: <span id="hist-prod-name" class="text-indigo-700"></span>
+          </h3>
+          <button onclick="document.getElementById('modal-prod-history').classList.add('hidden')" class="text-slate-400 hover:text-red-500"><i data-lucide="x"></i></button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-0 bg-white">
+          <table class="w-full text-sm text-left">
+            <thead class="bg-slate-100 text-slate-700 sticky top-0 border-b shadow-sm z-10">
+              <tr>
+                <th class="p-3 font-semibold">Data da Compra</th>
+                <th class="p-3 font-semibold">Fornecedor</th>
+                <th class="p-3 text-center font-semibold">Qtd</th>
+                <th class="p-3 text-right font-semibold">Preço Unit.</th>
+                <th class="p-3 text-right font-semibold">Total Pago</th>
+              </tr>
+            </thead>
+            <tbody id="hist-prod-list" class="divide-y"></tbody>
+          </table>
+        </div>
+        <div class="p-4 border-t bg-slate-50 flex justify-end">
+          <button onclick="document.getElementById('modal-prod-history').classList.add('hidden')" class="px-6 py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl transition shadow-md">Fechar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Documentos Equipe -->
+    <div id="modal-docs-equipe" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+      <div class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-md">
+        <h3 class="font-bold text-lg mb-2 text-slate-800 flex items-center gap-2"><i data-lucide="file-text" class="text-blue-600"></i> Documentos e Contratos</h3>
+        <p id="doc-equipe-nome" class="text-sm font-bold text-slate-500 mb-4"></p>
+        <input type="hidden" id="doc-equipe-id">
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Selecione o Documento</label>
+            <select id="doc-tipo-select" class="w-full p-2 border rounded font-bold text-slate-700 outline-none">
+              <option value="" selected disabled hidden>Clique aqui para selecionar...</option>
+              <option value="contrato1">Contrato de Trabalho - Servente</option>
+              <option value="contrato2">Contrato de Trabalho - Pedreiro</option>
+              <option value="epi">Comprovante de Entrega de EPI's</option>
+            </select>
+          </div>
+          <button onclick="imprimirDocumento()" class="w-full p-3 bg-slate-800 text-white rounded-lg font-bold hover:bg-slate-900 flex items-center justify-center gap-2">
+            <i data-lucide="printer" class="w-4 h-4"></i> Imprimir Documento Selecionado
+          </button>
+          <div class="border-t pt-4">
+            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Status do Contrato</label>
+            <button id="btn-assinar-doc" onclick="marcarContratoAssinado()" class="w-full p-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 flex items-center justify-center gap-2">
+              <i data-lucide="check-circle" class="w-4 h-4"></i> Marcar como Assinado
+            </button>
+          </div>
+        </div>
+        <button onclick="document.getElementById('modal-docs-equipe').classList.add('hidden')" class="w-full mt-4 p-3 bg-slate-200 text-slate-700 rounded-lg font-bold hover:bg-slate-300">Fechar</button>
+      </div>
+    </div>
+
+    <!-- Modal: Terceirizado (Form) -->
+    <div id="terc-form-container" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+          <h3 class="text-xl font-black text-slate-800">Dados do Terceirizado</h3>
+          <button onclick="document.getElementById('terc-form-container').classList.add('hidden')" class="text-slate-400 hover:text-red-500 transition"><i data-lucide="x-circle"></i></button>
+        </div>
+        <div class="p-6 overflow-y-auto">
+          <form onsubmit="saveTerc(event)" class="space-y-4">
+            <input type="hidden" id="terc-id">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="md:col-span-2">
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Nome Completo / Razão Social</label>
+                <input type="text" id="terc-name" required class="w-full p-3 border rounded-lg focus:border-blue-500 outline-none font-medium">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">CPF ou CNPJ</label>
+                <input type="text" id="terc-cpf" class="w-full p-3 border rounded-lg focus:border-blue-500 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">RG / I.E.</label>
+                <input type="text" id="terc-rg" class="w-full p-3 border rounded-lg focus:border-blue-500 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Telefone / WhatsApp</label>
+                <input type="text" id="terc-phone" class="w-full p-3 border rounded-lg focus:border-blue-500 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Chave PIX</label>
+                <input type="text" id="terc-pix" class="w-full p-3 border rounded-lg focus:border-blue-500 outline-none">
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Endereço</label>
+                <input type="text" id="terc-endereco" class="w-full p-3 border rounded-lg focus:border-blue-500 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Obra de Atuação</label>
+                <select id="terc-obra" class="w-full p-3 border rounded-lg focus:border-blue-500 outline-none bg-slate-50 font-medium"></select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Valor do Metro (R$)</label>
+                <input type="number" step="0.01" id="terc-val-metro" required class="w-full p-3 border rounded-lg focus:border-blue-500 outline-none font-black text-indigo-700 bg-indigo-50">
+              </div>
+            </div>
+            <div class="pt-4 flex justify-end gap-3 border-t mt-4">
+              <button type="button" onclick="document.getElementById('terc-form-container').classList.add('hidden')" class="px-5 py-2.5 text-slate-600 font-bold hover:bg-slate-100 rounded-lg transition">Cancelar</button>
+              <button type="submit" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow transition">Salvar Cadastro</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Produção Terceirizado -->
+    <div id="modal-producao-terc" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
+        <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-indigo-600 text-white">
+          <div>
+            <h3 class="text-lg font-black tracking-tight">Apuração de Produção</h3>
+            <p id="prod-terc-subtitle" class="text-xs font-medium text-indigo-200 mt-0.5">Nome do Empreiteiro</p>
+          </div>
+          <button onclick="document.getElementById('modal-producao-terc').classList.add('hidden')" class="text-indigo-200 hover:text-white transition"><i data-lucide="x-circle"></i></button>
+        </div>
+        <div class="p-4 bg-slate-50 border-b border-slate-200">
+          <div class="flex gap-2">
+            <input type="hidden" id="prod-terc-id">
+            <input type="date" id="prod-terc-data" class="flex-1 p-2 border border-slate-300 rounded focus:border-indigo-500 outline-none text-sm font-bold">
+            <input type="number" step="0.01" id="prod-terc-metros" placeholder="Metros (m² / m linear)" class="flex-1 p-2 border border-slate-300 rounded focus:border-indigo-500 outline-none text-sm font-bold">
+            <button onclick="lancarProducaoTerc()" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 font-bold text-sm shadow">Lançar</button>
+          </div>
+        </div>
+        <div class="p-0 overflow-y-auto flex-1 bg-white">
+          <table class="w-full text-left border-collapse">
+            <thead class="bg-slate-100 sticky top-0">
+              <tr class="text-xs text-slate-500 uppercase font-bold">
+                <th class="p-3 border-b">Data</th>
+                <th class="p-3 border-b text-center">Metragem</th>
+                <th class="p-3 border-b text-center">Status</th>
+                <th class="p-3 border-b w-10"></th>
+              </tr>
+            </thead>
+            <tbody id="prod-terc-list-body"></tbody>
+          </table>
+        </div>
+        <div class="p-4 bg-slate-100 border-t border-slate-200 flex justify-between items-center">
+          <div class="text-xs font-bold text-slate-500 uppercase">Total Metros:<br><span id="prod-terc-total-metros" class="text-lg font-black text-slate-800">0.00</span></div>
+          <div class="text-xs font-bold text-slate-500 uppercase text-right">Valor A Pagar:<br><span id="prod-terc-total-valor" class="text-lg font-black text-indigo-700">R$ 0,00</span></div>
+        </div>
+        <div class="p-3 border-t bg-slate-50">
+          <button type="button" onclick="imprimirReciboIndividualTerc()" class="w-full px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-bold rounded-lg text-sm flex items-center justify-center gap-2 transition">
+            <i data-lucide="printer" width="16"></i> Imprimir Extrato
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- SCRIPTS JS EXTERNOS (ordem importa)                        -->
+    <!-- ======================================================== -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/navigate.js"></script>
+    <script src="js/obras.js"></script>
+    <script src="js/ordens.js"></script>
+    <script src="js/financeiro.js"></script>
+    <script src="js/equipe.js"></script>
+    <script src="js/terceirizados.js"></script>
+    <script src="js/fornecedores.js"></script>
+    <script src="js/produtos.js"></script>
+    <script src="js/fases.js"></script>
+    <script src="js/relatorios.js"></script>
+    <script src="js/usuarios.js"></script>
+
   </body>
 </html>
