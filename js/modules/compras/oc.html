@@ -1,0 +1,35 @@
+<div class="flex flex-col h-full fade-in">
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h2 class="text-2xl font-bold text-slate-800">Ordens de Compra</h2>
+            <p class="text-slate-500 text-sm">Histórico de pedidos e materiais solicitados</p>
+        </div>
+        <button onclick="router.navigate('pos')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg btn-action shadow-md">
+            <i data-lucide="plus" class="w-5 h-5"></i> Nova O.C.
+        </button>
+    </div>
+
+    <div class="bg-white p-4 rounded-xl shadow-sm border mb-4 flex gap-4">
+        <input type="text" id="busca-oc" placeholder="Buscar por número ou fornecedor..." class="border rounded-lg px-4 py-2 w-full md:w-1/3">
+        </div>
+
+    <div class="bg-white rounded-xl shadow-sm border overflow-hidden flex-1">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-slate-50 border-b text-slate-600">
+                    <tr>
+                        <th class="p-4 font-semibold text-sm">Nº O.C.</th>
+                        <th class="p-4 font-semibold text-sm">Data</th>
+                        <th class="p-4 font-semibold text-sm">Fornecedor</th>
+                        <th class="p-4 font-semibold text-sm">Obra</th>
+                        <th class="p-4 font-semibold text-sm">Status</th>
+                        <th class="p-4 font-semibold text-sm text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-oc-body" class="divide-y divide-slate-100">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+    
+    </div>
