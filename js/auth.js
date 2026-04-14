@@ -1,13 +1,13 @@
 // ====== AUTENTICAÇÃO E NAVEGAÇÃO ======
 function verificarSessao() {
     const userSessao = localStorage.getItem('rv_user');
-    if (!userSessao) window.location.replace('login.html');
+    if (!userSessao) window.location.replace('index.html');
     else dadosUsuario = JSON.parse(userSessao);
 }
 
 function fazerLogout() {
     localStorage.removeItem('rv_user');
-    window.location.replace('login.html');
+    window.location.replace('index.html');
 }
 
 function navigate(viewId) {
