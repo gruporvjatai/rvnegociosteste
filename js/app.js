@@ -109,6 +109,7 @@ function navigate(viewId) {
 
     if(viewId === 'dash') renderDashboard();
     if(viewId === 'oc') renderOCList();
+    if(viewId === 'pos') { renderViewPos(); }
     // outras abas serão adicionadas aqui conforme migração
     lucide.createIcons();
 }
