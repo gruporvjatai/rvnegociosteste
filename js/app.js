@@ -111,7 +111,7 @@ function navigate(viewId) {
     if(viewId === 'oc') renderOCList();
     if(viewId === 'pos') { renderViewPos(); }
     if(viewId === 'fin') { renderViewFin(); }
-    if(viewId === 'equipe') { renderViewEquipe(); }
+    if(viewId === 'equipe') { createEquipeModals(); renderViewEquipe(); }
     if(viewId === 'fornecedores') { renderViewFornecedores(); }
     if(viewId === 'prod') { renderViewProd(); }
     if(viewId === 'fases') { renderViewFases(); }
