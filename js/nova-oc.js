@@ -1,8 +1,141 @@
 // ============================================================
-// ABA: NOVA O.C. (view-pos)
+// ABA: NOVA O.C. (view-pos) – view e modais gerados via JS
 // ============================================================
 
-// ----- CARRINHO -----
+let posModalsCreated = false;
+
+// Cria os modais (fornecedor e produto) e injeta no body, uma única vez
+function createPosModals() {
+    if (posModalsCreated) return;
+    const modalHTML = `
+    <div id="pos-fornecedor-modal" class="hidden fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl flex flex-col max-h-[90vh]">
+            <div class="p-4 border-b flex justify-between items-center bg-slate-50 rounded-t-2xl">
+                <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2"><i data-lucide="users" class="text-blue-600"></i> Selecionar Fornecedor</h3>
+                <button onclick="closePosFornecedorModal()" class="text-slate-400 hover:text-red-500"><i data-lucide="x"></i></button>
+            </div>
+            <div class="p-4 border-b">
+                <div class="relative w-full">
+                    <i data-lucide="search" class="absolute left-3 top-3.5 text-slate-400 w-5 h-5"></i>
+                    <input type="text" id="pos-fornecedor-modal-search" placeholder="Buscar fornecedor..." class="w-full pl-10 p-3 border-2 border-slate-200 rounded-xl font-bold outline-none focus:border-blue-600" onkeyup="renderPosFornecedorModal()">
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto p-4 bg-slate-100/50">
+                <div id="pos-fornecedor-modal-grid" class="flex flex-col gap-2"></div>
+            </div>
+            <div class="p-4 border-t bg-slate-50 rounded-b-2xl flex flex-col gap-2">
+                <button onclick="selectPosFornecedor('', 'A Definir')" class="w-full py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition">Limpar (A Definir)</button>
+            </div>
+        </div>
+    </div>
+    <div id="pos-product-modal" class="hidden fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl flex flex-col max-h-[90vh]">
+            <div class="p-4 border-b flex justify-between items-center bg-slate-50 rounded-t-2xl">
+                <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2"><i data-lucide="package-search" class="text-blue-600"></i> Selecionar Material</h3>
+                <button onclick="closePosProductModal()" class="text-slate-400 hover:text-red-500"><i data-lucide="x"></i></button>
+            </div>
+            <div class="p-4 border-b">
+                <div class="relative w-full">
+                    <i data-lucide="search" class="absolute left-3 top-3.5 text-slate-400 w-5 h-5"></i>
+                    <input type="text" id="pos-modal-search" placeholder="Digite o nome..." class="w-full pl-10 p-3 border-2 border-slate-200 rounded-xl font-bold outline-none focus:border-blue-600" onkeyup="renderPosProductModal()">
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto p-4 bg-slate-100/50">
+                <div id="pos-modal-grid" class="flex flex-col gap-2"></div>
+            </div>
+            <div class="p-4 border-t bg-slate-50 rounded-b-2xl">
+                <button onclick="closePosProductModal()" class="w-full py-3 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl transition">Concluído</button>
+            </div>
+        </div>
+    </div>`;
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    posModalsCreated = true;
+}
+
+// Cria a view da Nova O.C. (estrutura completa) e injeta no container
+function renderViewPos() {
+    const container = document.getElementById('view-pos');
+    // Se a view já foi montada, apenas atualiza os selects e o carrinho
+    if (container.dataset.rendered === 'true') {
+        updateSelects(); // atualiza selects de obra e fase
+        renderCart();    // atualiza carrinho
+        return;
+    }
+    const viewHTML = `
+        <div class="flex flex-col h-[calc(100vh-100px)]">
+            <div class="bg-white p-0 rounded-xl border shadow-lg flex flex-col h-full overflow-hidden border-t-4 border-t-blue-800">
+                <div class="p-4 bg-slate-50 border-b flex justify-between items-center">
+                    <div class="font-bold text-slate-700 flex gap-2 items-center"><i data-lucide="shopping-cart" class="text-blue-700"></i> NOVA ORDEM DE COMPRA</div>
+                    <div class="flex gap-2">
+                        <button onclick="openPosProductModal()" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 shadow-md transition text-sm"><i data-lucide="search" class="w-4 h-4"></i> Buscar Materiais</button>
+                        <button onclick="clearCart()" class="text-xs text-red-500 hover:text-red-700 font-bold border border-red-200 px-3 py-2 rounded-lg bg-white">LIMPAR</button>
+                    </div>
+                </div>
+                <div id="pos-cart-items" class="flex-1 space-y-2 overflow-y-auto p-4 bg-slate-50"></div>
+                <div class="bg-white p-4 border-t shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Destino (Obra)</label>
+                            <select id="pos-obra" class="w-full p-2 border rounded-lg text-sm bg-slate-50 font-bold text-slate-700 focus:border-blue-600 outline-none"></select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Fase da Obra</label>
+                            <select id="pos-fase" class="w-full p-2 border rounded-lg text-sm bg-slate-50 font-bold text-slate-700 focus:border-blue-600 outline-none">
+                                <option value="">-- Não especificada --</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Fornecedor</label>
+                            <div class="flex gap-2">
+                                <input type="hidden" id="pos-fornecedor" value="">
+                                <button id="pos-fornecedor-btn" onclick="openPosFornecedorModal()" class="w-full p-2 border rounded-lg text-sm bg-slate-50 focus:border-blue-600 text-left flex justify-between items-center text-slate-600 font-bold">
+                                    <span class="truncate">Selecione Fornecedor</span>
+                                    <i data-lucide="search" class="w-4 h-4 text-slate-400 shrink-0"></i>
+                                </button>
+                                <button onclick="navigate('fornecedores')" class="p-2 bg-slate-200 rounded-lg hover:bg-slate-300 shrink-0" title="Novo Fornecedor"><i data-lucide="user-plus" class="w-4 h-4"></i></button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Solicitante / Comprador</label>
+                            <input type="text" id="pos-solicitante" placeholder="Nome de quem solicitou..." class="w-full p-2 border rounded-lg text-sm bg-slate-50 focus:border-blue-600 outline-none font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Observações (Recados)</label>
+                            <textarea id="pos-custom-obs" rows="1" placeholder="Observações da Cotação..." class="w-full p-2 border rounded-lg text-sm bg-slate-50 focus:border-blue-600 outline-none resize-none"></textarea>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-end border-t border-slate-200 pt-3">
+                        <div class="text-sm font-bold text-slate-500">Total de Itens: <span id="cart-count" class="text-blue-700">0</span></div>
+                        <div class="text-right flex items-center gap-4">
+                            <div>
+                                <div class="text-xs text-slate-500 font-bold uppercase">Total da O.C.</div>
+                                <div id="pos-total-display" class="text-3xl font-black text-slate-800 leading-none">R$ 0,00</div>
+                            </div>
+                            <button onclick="saveOC()" class="btn-action bg-blue-700 hover:bg-blue-800 text-white px-8 py-3 rounded-xl shadow-lg text-lg"><i data-lucide="save"></i> Salvar O.C.</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    container.innerHTML = viewHTML;
+    container.dataset.rendered = 'true';
+    updateSelects(); // preenche os selects de obra e fase
+    renderCart();    // carrinho vazio
+    lucide.createIcons();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// ----- CARRINHO -----===================================================================================
 function renderCart() {
     const box = document.getElementById('pos-cart-items');
     if(!CART.length) { 
