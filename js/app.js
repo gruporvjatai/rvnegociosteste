@@ -111,6 +111,7 @@ function navigate(viewId) {
     if(viewId === 'oc') renderOCList();
     if(viewId === 'pos') { renderViewPos(); }
     if(viewId === 'fin') { renderViewFin(); }
+    if(viewId === 'equipe') { renderViewEquipe(); }
     // outras abas serão adicionadas aqui conforme migração
     lucide.createIcons();
 }
@@ -187,6 +188,33 @@ async function saveObra(e) {
     document.getElementById('obra-form-container').classList.add('hidden');
     showToast("Obra Salva!");
     loadData();
+}
+
+function getColaboradoresUnificados() {
+  const equipe = STATE.equipe.map(e => ({
+    ...e,
+    tipo: 'diaria',
+    valor_base: parseFloat(e.valor_diaria || 0),
+    unidade: 'dias',
+    table_origin: 'equipe'
+  }));
+  const terceirizados = STATE.terceirizados.map(t => ({
+    ...t,
+    nome: t.nome,
+    categoria: 'Terceirizado (Metro)',
+    telefone: t.telefone,
+    cpf: t.cpf_cnpj,
+    rg: t.rg,
+    endereco: t.endereco,
+    chave_pix: t.chave_pix,
+    obra_atual_id: t.obra_atual_id,
+    ativo: t.ativo,
+    tipo: 'metro',
+    valor_base: parseFloat(t.valor_metro || 0),
+    unidade: 'metros',
+    table_origin: 'terceirizados'
+  }));
+  return [...equipe, ...terceirizados];
 }
 
 // ===== LOGOUT =====
