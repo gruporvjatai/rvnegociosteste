@@ -112,6 +112,8 @@ function navigate(viewId) {
     if(viewId === 'pos') { renderViewPos(); }
     if(viewId === 'fin') { renderViewFin(); }
     if(viewId === 'equipe') { renderViewEquipe(); }
+    if(viewId === 'fornecedores') { renderViewFornecedores(); }
+    if(viewId === 'prod') { renderViewProd(); }
     // outras abas serão adicionadas aqui conforme migração
     lucide.createIcons();
 }
